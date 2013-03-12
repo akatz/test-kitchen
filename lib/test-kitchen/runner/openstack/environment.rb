@@ -52,12 +52,16 @@ module TestKitchen
       end
 
       def connection
+        begin
         @connection ||= Fog::Compute.new(:provider => 'OpenStack',
                                          :openstack_username => username,
                                          :openstack_api_key => password,
                                          :openstack_auth_url => auth_url,
                                          :openstack_region => region,
                                          :openstack_tenant => tenant)
+        rescue
+          retry
+        end
       end
 
 
